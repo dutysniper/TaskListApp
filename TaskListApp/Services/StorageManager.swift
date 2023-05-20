@@ -36,6 +36,20 @@ final class StorageManager {
             }
         }
     }
+    func save(task taskName: String, to taskList: inout [Task]) {
+            let task = Task(context: persistentContainer.viewContext)
+            task.title = taskName
+            taskList.append(task)
+        
+            if persistentContainer.viewContext.hasChanges {
+                do {
+                    try persistentContainer.viewContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+    }
+    
     
     func fetchData(to taskList: inout [Task]) {
         let fetchRequest = Task.fetchRequest()
@@ -47,10 +61,15 @@ final class StorageManager {
         }
     }
     
-    func updateData() {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            context.refresh(Task, mergeChanges: true)
+    func delete(object: Task) {
+        persistentContainer.viewContext.delete(object)
+        do {
+            try persistentContainer.viewContext.save()
+        } catch {
+            print(error.localizedDescription)
         }
+    }
+    func update(object: Task) {
+        
     }
 }
