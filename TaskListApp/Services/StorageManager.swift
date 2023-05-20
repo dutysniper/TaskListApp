@@ -24,7 +24,7 @@ final class StorageManager {
         return container
     }()
 
-    // MARK: - Core Data Saving support
+    // MARK: - Core Data  CRUD methods
     func saveContext() {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -36,6 +36,7 @@ final class StorageManager {
             }
         }
     }
+    
     func save(task taskName: String, to taskList: inout [Task]) {
             let task = Task(context: persistentContainer.viewContext)
             task.title = taskName
@@ -49,7 +50,6 @@ final class StorageManager {
                 }
             }
     }
-    
     
     func fetchData(to taskList: inout [Task]) {
         let fetchRequest = Task.fetchRequest()
@@ -68,8 +68,5 @@ final class StorageManager {
         } catch {
             print(error.localizedDescription)
         }
-    }
-    func update(object: Task) {
-        
     }
 }
